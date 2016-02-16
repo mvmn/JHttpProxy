@@ -74,6 +74,11 @@ public class JHttpProxy {
 					for (final Header header : targetResponse.getAllHeaders()) {
 						response.addHeader(header.getName(), header.getValue());
 					}
+					final String origin = request.getHeader("Origin");
+					if (origin != null) {
+						// Force CORS
+						response.addHeader("Access-Control-Allow-Origin", origin);
+					}
 					response.setStatus(targetResponse.getStatusLine().getStatusCode());
 					if (targetResponse.getEntity() != null) {
 						targetResponse.getEntity().writeTo(response.getOutputStream());
